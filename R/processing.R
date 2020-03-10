@@ -1,5 +1,5 @@
 load_current_data <- function() {
-    data <- read.csv("R/data/fl_covid_data.csv", stringsAsFactors = FALSE)
+    data <- read_csv("R/data/fl_covid_data.csv")
 }
 
 process_date <- function(update_date) {
@@ -10,16 +10,20 @@ process_date <- function(update_date) {
   } else if (date_split[[1]][3] == "p.m.") {
       date_time <- mdy_hm(str_c(date_split[[1]][4], date_split[[1]][2], "AM", sep = " "), tz = "America/New_York")
   }
+  date_time <- with_tz(date_time, tzone = "UTC")
 }
 
-process_data <- function(web_data, date_time) {
+process_data <- function(web_data, new_date_time) {
   data_split <- str_split(web_data, ' – ')
   data_values <- sapply(data_split, function(l) l[[1]])
-  data_new <- as.numeric(data_values)
+  data_values <- as.numeric(data_values)
   data_current <- load_current_data()
-  data_updated <- rbind(data_current, c(date_time, data_new))
+  data_new <- tail(data_current, 1)
+  data_new$date_time = new_date_time
+  data_new[,2:9] = data_values
+  data_updated <- rbind(data_current, data_new)
 }
 
 write_data <- function(updated_date) {
-    write.csv(updated_data, "R/data/fl_covid_data.csv")
+    write.csv(updated_data, "R/data/fl_covid_data.csv", row.names = FALSE)
 }

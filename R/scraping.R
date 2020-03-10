@@ -11,15 +11,6 @@ scrape_update_date_time <- function(webpage) {
     html_text()    
 }
 
-scrape_headers <- function(webpage) {
-  headers <- webpage %>%
-    html_nodes('.wysiwyg_content.clearfix') %>%
-    html_nodes('block') %>%
-    html_nodes('strong') %>%
-    html_text()
-  headers <- headers[headers != " "]
-}
-
 scrape_data <- function(webpage) {
   data <- webpage %>%
     html_nodes('.wysiwyg_content.clearfix') %>%

@@ -1,3 +1,8 @@
+library(rvest)
+library(stringr)
+library(lubridate)
+library(readr)
+
 update <- function() {
     current_data <- load_current_data()
     current_date_time <- tail(current_data, 1)$date_time

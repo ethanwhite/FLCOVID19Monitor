@@ -8,9 +8,9 @@ process_date <- function(update_date) {
   regex <- "([0-9]+:[0-9]+) ([ap]\\.[m]\\.) ET ([0-9]{1,2}/[0-9]{1,2}/[0-9]{4})"
   date_split <- stringr::str_match_all(string = update_date, pattern = regex)
   if (date_split[[1]][3] == "a.m.") {
-      date_time <- lubridate::mdy_hm(stringr::str_c(date_split[[1]][4], date_split[[1]][2], "PM", sep = " "), tz = "America/New_York")
-  } else if (date_split[[1]][3] == "p.m.") {
       date_time <- lubridate::mdy_hm(stringr::str_c(date_split[[1]][4], date_split[[1]][2], "AM", sep = " "), tz = "America/New_York")
+  } else if (date_split[[1]][3] == "p.m.") {
+      date_time <- lubridate::mdy_hm(stringr::str_c(date_split[[1]][4], date_split[[1]][2], "PM", sep = " "), tz = "America/New_York")
   }
   date_time <- lubridate::with_tz(date_time, tzone = "UTC")
 }
